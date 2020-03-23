@@ -1,0 +1,5 @@
+.idea/
+bin/
+#.env
+gin-bin
+dev_env/

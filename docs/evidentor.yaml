@@ -1,0 +1,834 @@
+swagger: '2.0'
+info:
+  description: >-
+   This is just for learning Evidentor, hipotetical  API, and now test
+  version: 1.0.0
+  title: Evidentor
+  contact:
+    email: bokultis@gmail.com
+  
+host: localhost:3001
+basePath: /
+tags:
+  - name: Users
+    description: Everything about users
+    
+  - name: Students
+    description: Evidentor Students
+    
+  - name: Guardians
+    description: Evidentor Guardians
+    
+  - name: Teachers
+    description: Evidentor Teachers
+schemes:
+  - http
+  - https
+paths:
+
+############################# USERS #################################
+#####################################################################
+
+  /users/login:
+    post:
+      tags:
+        - Users
+      summary: Logs user into the system
+      description: 'testing values email: boris@horisen.com, password: 1234'
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Login data
+          required: true
+          schema:
+            $ref: '#/definitions/Credentials'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid username/password supplied
+          
+  /users/logout:
+    get:
+      tags:
+        - Users
+      summary: Logs out current logged in user session
+      description: ''
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: successful operation
+      security:
+      - Bearer: []
+          
+  /users:
+    get:
+      tags:
+      - Users
+      summary: "List of all users"
+      description: "Returns a json object of all users"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        
+      security:
+      - Bearer: []
+    post:
+      tags:
+        - Users
+      summary: Create user
+      description: This can only be done by the logged in user.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        default:
+          description: successful operation
+      security:
+        - Bearer: []
+  
+  
+  '/users/{id}':
+    get:
+      tags:
+        - Users
+      summary: Get user by user ID
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The IDthat  needs to be fetched.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      security:
+      - Bearer: []
+      
+    put:
+      tags:
+        - Users
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: name that need to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+      security:
+      - Bearer: []
+      
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+      security:
+      - Bearer: []
+      
+  ############################# STUDENTS ##############################
+  #####################################################################
+  /students:
+    get:
+      tags:
+      - Students
+      summary: "List of all students"
+      description: "Returns a json object of all students"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Student'
+        
+      security:
+      - Bearer: []
+    post:
+      tags:
+        - Students
+      summary: Create an Item
+      description: This can only be done by the logged in user.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created student object
+          required: true
+          schema:
+            $ref: '#/definitions/StudentInput'
+      responses:
+        default:
+          description: successful operation
+      security:
+        - Bearer: []
+    
+        
+  '/students/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get Item by ID
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The ID that needs to be fetched.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Item not found
+      security:
+      - Bearer: []
+    put:
+      tags:
+        - Students
+      summary: Update an Item
+      description: This can only be done by the logged in user.
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The ID that needs to be fetched.'
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Update student object
+          required: true
+          schema:
+            $ref: '#/definitions/StudentInput'
+      responses:
+        default:
+          description: successful operation
+      security:
+        - Bearer: []
+        
+   
+    delete:
+      tags:
+        - Students
+      summary: Delete a Student
+      description: This can only be done by the logged in user.
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The ID that needs to be fetched.'
+          required: true
+          type: string
+      responses:
+        200:
+            description: successful operation
+      security:
+        - Bearer: []
+      
+  '/students/groups/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's groups by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch groups.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Group'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Group not found
+      security:
+      - Bearer: []
+  
+  '/students/notes/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's notes by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch notes.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/StudentNotes'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Note not found
+      security:
+      - Bearer: []
+      
+  '/students/attendances/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's attendances by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch attendaces.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Note not found
+      security:
+      - Bearer: []
+      
+  '/students/portfolios/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's portfolios by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch portfolios.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Portfolio not found
+      security:
+      - Bearer: []
+      
+  '/students/guardians/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's guardians by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch guardians.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Guardians not found
+      security:
+      - Bearer: []
+      
+  '/students/goals/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's goals by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch goals.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Goals not found
+      security:
+      - Bearer: []
+      
+      
+  '/students/registrations/{studentId}':
+    get:
+      tags:
+        - Students
+      summary: Get student's registrations by student id
+      description: ''
+      produces:
+        - application/json
+      parameters:
+        - name: studentId
+          in: path
+          description: 'The StudentID that needs to be used to fetch registrations.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Student'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Registrations not found
+      security:
+      - Bearer: []
+      
+      
+  ############################# GUARDIANS #############################
+  #####################################################################
+  /guardians:
+    get:
+      tags:
+      - Guardians
+      summary: "List of all students"
+      description: "Returns a json object of all students"
+      produces:
+      - "application/json"
+      parameters:
+        - name: guardiantId
+          in: path
+          description: 'The ID that needs to be fetched.'
+          required: true
+          type: string
+      responses:
+        default:
+            description: successful operation
+        
+      security:
+        - Bearer: []
+        
+    post:
+      tags:
+        - Guardians
+      summary: Create an Item
+      description: This can only be done by the logged in user.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created guardian object
+          required: true
+          schema:
+            $ref: '#/definitions/Guardian'
+      responses:
+        default:
+          description: successful operation
+      security:
+        - Bearer: []
+      
+############################# TEACHER ###############################
+#####################################################################
+  /teachers:
+    get:
+      tags:
+      - Teachers
+      summary: "List of all teachers"
+      description: "Returns a json object of all students"
+      produces:
+      - "application/json"
+      parameters:
+        - name: teacherId
+          in: path
+          description: 'The ID that needs to be fetched.'
+          required: true
+          type: string
+      responses:
+        default:
+            description: successful operation
+        
+      security:
+        - Bearer: []
+        
+    post:
+      tags:
+        - Teachers
+      summary: Create an Teacher
+      description: This can only be done by the logged in user.
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created teacher object
+          required: true
+          schema:
+            $ref: '#/definitions/Teacher'
+      responses:
+        default:
+          description: successful operation
+      security:
+        - Bearer: []
+      
+
+########################### DEFINITIONS #############################
+#####################################################################
+      
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      gender:
+        type: string
+      email:
+        type: string
+      address:
+        type: string
+      optin:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  Credentials:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+        
+        
+  Student:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      birthdate:
+        type: string
+      gender:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  StudentInput:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      birthday:
+        type: string
+      gender:
+        type: string
+
+        
+  Guardian:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      birthdate:
+        type: string
+      city:
+        type: string
+      address:
+        type: string
+      mobile:
+        type: string
+      phone:
+        type: string
+      bussiness_phone:
+        type: string
+      gender:
+        type: string
+      email:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  Group:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    
+  Teacher:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      birthdate:
+        type: string
+      city:
+        type: string
+      address:
+        type: string
+      mobile:
+        type: string
+      phone:
+        type: string
+      bussiness_phone:
+        type: string
+      gender:
+        type: string
+      email:
+        type: string  
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  DevelopmentAspect:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  DevelopmentIndicator:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  StudentNotes:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      studentId:
+        type: integer
+        format: int64
+      note:
+        type: string
+      description:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+        
+  StudentRegistration:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      studentId:
+        type: integer
+        format: int64
+      registrationTypeId:
+        type: integer
+        format: int64
+      note:
+        type: string
+      registrationDate:
+        type: string
+        
+  RegistrationType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      period:
+        type: string
+      cost_per_period:
+        type: string
+      cost_per_sick_day:
+        type: string
+        
+  Attendance:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      studentId:
+        type: integer
+        format: int64
+      date:
+        type: string
+      status:
+        type: string
+      remark:
+        type: string
+      note:
+        type: string
+        
+        
+  Portfolio:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      studentId:
+        type: integer
+        format: int64
+      note:
+        type: string
+      data:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+      
+      
+
+
+

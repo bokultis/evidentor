@@ -12,6 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+//Logger ...
 var Logger *logrus.Logger
 
 func main() {

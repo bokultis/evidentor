@@ -20,11 +20,13 @@ func NewLogger() *logrus.Logger {
 	}
 
 	logger.Out = os.Stdout
+	logFile := "/var/log/logrus.log"
 
-	file, err := os.OpenFile("/var/log/logrus.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	file, err := os.OpenFile(logFile, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err == nil {
 		logger.Out = file
 	} else {
+		logger.Info(err)
 		logger.Info("Failed to log to file, using default stderr")
 	}
 

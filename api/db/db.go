@@ -2,29 +2,18 @@ package db
 
 import (
 	"errors"
-	"evidentor/api/logger"
+	"log"
+	"time"
+
 	"os"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-//database global
+//DB database global
 var DB *gorm.DB
-
-type GormLogger struct{}
-
-func (*GormLogger) Print(v ...interface{}) {
-
-	log := logger.NewLogger()
-	log.SetReportCaller(false)
-	if v[0] == "sql" {
-		log.Printf("%v %v  %v", v[1], v[2], v[3])
-	}
-	if v[0] == "log" {
-		log.Print(v[2])
-	}
-}
 
 func SetupDB() *gorm.DB {
 
@@ -35,21 +24,32 @@ func SetupDB() *gorm.DB {
 	var dbUser string = os.Getenv("DB_USERNAME")
 	var dbPassword string = os.Getenv("DB_PASSWORD")
 
-	////fmt.Printf("dbName: %s, dbHost: %s", dbName, dbHost)
+	//setup loger
+	logger.Default.LogMode(logger.Error)
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold: time.Millisecond, // Slow SQL threshold
+			LogLevel:      logger.Error,     // Log level
+			Colorful:      true,             // Enable color
+		},
+	)
+
 	//connect to db
-	db, dbError := gorm.Open("mysql", dbUser+":"+dbPassword+"@tcp("+dbHost+":"+dbPort+")/"+dbName+"?charset=utf8&parseTime=True&loc=Local")
-	//db, dbError := gorm.Open("mysql", dbUser+":"+dbPassword+"@/"+dbName+"?charset=utf8&parseTime=True&loc=Local")
+	dsn := dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8&parseTime=True&loc=Local"
+
+	db, dbError := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: newLogger,
+	})
+
 	if dbError != nil {
 		panic(dbError)
 	}
 
-	db.SetLogger(&GormLogger{})
-	db.DB().SetMaxIdleConns(0)
-
 	return db
 }
 
-// get database name from env
+// GetDbName get database name from env
 func GetDbName() (string, error) {
 
 	database := os.Getenv("DB_NAME")

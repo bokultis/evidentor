@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/gorilla/handlers"
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,16 +15,9 @@ import (
 var Logger *logrus.Logger
 
 func main() {
-
 	logger.Logger = logger.NewLogger()
 
-	// loads values from .env into the system
-	if err := godotenv.Load(); err != nil {
-		logger.Logger.Print("No .env file found")
-	}
-
 	//append user routes
-
 	port := os.Getenv("PORT")
 	router := router.NewRouter()
 
@@ -35,7 +27,6 @@ func main() {
 
 	//Setup database
 	db.DB = db.SetupDB()
-	defer db.DB.Close()
 
 	logger.Logger.Printf("Server starts at localhost: %s", port)
 	//create http server

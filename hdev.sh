@@ -122,7 +122,7 @@ function action_install {
         fi            
         go get github.com/sirupsen/logrus
         go get github.com/go-redis/redis
-        go get github.com/jinzhu/gorm
+        go get gorm.io/gorm
         go get github.com/streadway/amqp
         go get github.com/nyaruka/phonenumbers
         go get github.com/asaskevich/govalidator

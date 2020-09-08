@@ -64,12 +64,12 @@ function action_docker_api {
     cd $BASEDIR/api
     ${GOBUILD}  -o ${BINARY_PATH}/${BINARY_NAME} -v
 
-    cd ${BASEDIR}/cmd/
-    ./image-build-docker.sh latest > /dev/null 2>&1
+    cd ${BASEDIR}/cmd/ 
+    ./image-build-docker.sh latest  > /dev/null 2>&1
 
     cd ${BASEDIR}
     docker rm -f ${DOCKER_API}
-    docker run -d --name ${DOCKER_API} --network="host" -v ${BASEDIR}/log:/var/log  --env-file ${BASEDIR}/.env evidentor:latest 
+    docker run -d --name ${DOCKER_API} --network="host" -v ${BASEDIR}/log:/var/log  --env-file=.env evidentor:latest 
 }
 
 function action_docker_kill_all {

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type StudentDO struct {
@@ -50,8 +50,8 @@ func CreateStudent(student *StudentDO) (int, error) {
 		return 0, err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	tx := db.DB.Begin()
 
@@ -72,8 +72,8 @@ func GetStudent(id int) (*StudentDO, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	if err := db.DB.Table(database+".students ").
 		Select("students.*").
@@ -96,8 +96,8 @@ func GetAllStudents() ([]*StudentDO, error) {
 		return nil, err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	if err := db.DB.Table(database + ".students ").
 		Select("students.*").
@@ -119,8 +119,8 @@ func GetStudentGroups(studentId int) ([]*GroupDO, error) {
 		return nil, err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	// SELECT * FROM groups as g
 	// 	LEFT JOIN student_groups as sg on sg.group_id = g.id
@@ -148,8 +148,8 @@ func GetStudentNotes(studentId int) ([]*StudentNoteDO, error) {
 		return nil, err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	if err := db.DB.Table(database+".student_notes ").
 		Select("student_notes.*").
@@ -171,8 +171,8 @@ func UpdateStudent(studentID int, update map[string]interface{}) error {
 		return err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	tx := db.DB.Begin()
 
@@ -207,8 +207,8 @@ func DeleteStudent(id int) error {
 		return err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	err = db.DB.Table(database+".students").Where("id=?", id).Delete(&student).Error
 	if err != nil {

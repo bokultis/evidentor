@@ -1,54 +1,17 @@
-[36mINFO[0m[25-03-2020 12:09:18]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:15:50]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:32:53]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:34:58]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:35:33]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:36:41]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:37:33]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:39:57]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:41:05]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:41:15]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:41:53]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:42:44]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:46:22]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:49:30]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:50:50]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:51:55]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:52:21]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:53:16]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:54:09]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:55:06]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:55:28]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:58:22]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 12:59:19]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:00:49]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:01:17]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:01:48]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:02:23]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:04:16]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:06:27]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:07:33]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:08:05] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:97 17.271718ms  SELECT users.* FROM evidentor.users   WHERE (users.email=? ) ORDER BY evidentor.users .`id` ASC LIMIT 1 
-[36mINFO[0m[25-03-2020 13:08:33] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:121 17.656573ms  SELECT user_roles.user_id, user_roles.role_id, role.name FROM evidentor.user_roles  LEFT JOIN evidentor.role  on role.id=user_roles.role_id WHERE (user_roles.user_id=? ) 
-[36mINFO[0m[25-03-2020 13:08:33] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:144 1.259449ms  SELECT users.* FROM evidentor.users    
-[33mWARN[0m[25-03-2020 13:08:33] test                                         
-[36mINFO[0m[25-03-2020 13:39:15] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:121 1.085264ms  SELECT user_roles.user_id, user_roles.role_id, role.name FROM evidentor.user_roles  LEFT JOIN evidentor.role  on role.id=user_roles.role_id WHERE (user_roles.user_id=? ) 
-[36mINFO[0m[25-03-2020 13:39:15] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:144 1.628776ms  SELECT users.* FROM evidentor.users    
-[33mWARN[0m[25-03-2020 13:39:15] test                                         
-[36mINFO[0m[25-03-2020 13:39:33] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:121 1.289332ms  SELECT user_roles.user_id, user_roles.role_id, role.name FROM evidentor.user_roles  LEFT JOIN evidentor.role  on role.id=user_roles.role_id WHERE (user_roles.user_id=? ) 
-[36mINFO[0m[25-03-2020 13:39:33] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:74 12.887313ms  SELECT users.* FROM evidentor.users   WHERE (users.id=? ) ORDER BY evidentor.users .`id` ASC LIMIT 1 
-[36mINFO[0m[25-03-2020 13:39:48] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:121 959.004µs  SELECT user_roles.user_id, user_roles.role_id, role.name FROM evidentor.user_roles  LEFT JOIN evidentor.role  on role.id=user_roles.role_id WHERE (user_roles.user_id=? ) 
-[36mINFO[0m[25-03-2020 13:39:48] /home/boris/develop/horisen/go/src/evidentor/api/student/model.go:104 2.213136ms  SELECT students.* FROM evidentor.students    
-[36mINFO[0m[25-03-2020 13:49:12]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[25-03-2020 13:59:30] /home/boris/develop/horisen/go/src/evidentor/api/user/model.go:121 14.591973ms  SELECT user_roles.user_id, user_roles.role_id, role.name FROM evidentor.user_roles  LEFT JOIN evidentor.role  on role.id=user_roles.role_id WHERE (user_roles.user_id=? ) 
-[36mINFO[0m[25-03-2020 13:59:30] /home/boris/develop/horisen/go/src/evidentor/api/student/model.go:104 10.44199ms  SELECT students.* FROM evidentor.students    
-[36mINFO[0m[27-03-2020 09:18:05]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:21:16]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:21:53]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:22:43]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:30:51]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:32:47]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:56:56]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 09:58:00]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 10:02:36]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
-[36mINFO[0m[27-03-2020 10:03:15]/home/boris/develop/horisen/go/src/evidentor/api/main.go:40 main.main() Server starts at localhost: 3001             
+[36mINFO[0m[04-09-2020 08:41:50]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:00:36]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[36mINFO[0m[04-09-2020 09:02:10]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[36mINFO[0m[04-09-2020 09:09:44]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:10:54]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[36mINFO[0m[04-09-2020 09:18:28]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:18:45]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[33mWARN[0m[04-09-2020 09:22:06]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[36mINFO[0m[04-09-2020 09:24:39]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:24:49]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[36mINFO[0m[04-09-2020 09:26:26]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:26:35]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[36mINFO[0m[04-09-2020 09:42:20]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[36mINFO[0m[04-09-2020 09:42:42]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:42:53]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() Error 1054: Unknown column 'evidentor.users .id' in 'order clause' 
+[36mINFO[0m[04-09-2020 09:45:11]/home/boris/develop/go/src/evidentor/api/main.go:33 main.main() Server starts at localhost: 3001             
+[33mWARN[0m[04-09-2020 09:51:55]/home/boris/develop/go/src/evidentor/api/user/handlers.go:144 evidentor/api/user.LoginHandler() record not found                             

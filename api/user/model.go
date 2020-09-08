@@ -43,8 +43,8 @@ func CreateUser(user *UserDO) (int, error) {
 		return 0, err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	tx := db.DB.Begin()
 
@@ -65,10 +65,10 @@ func GetUser(id int) (*UserDO, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
-	if err := db.DB.Table(database+".users ").
+	if err := db.DB.Table(database+".users").
 		Select("users.*").
 		Where("users.id=? ", id).
 		First(&user).Error; err != nil {
@@ -88,10 +88,10 @@ func GetUserByEmail(email string) (*UserDO, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
-	if err := db.DB.Table(database+".users ").
+	if err := db.DB.Table(database+".users").
 		Select("users.*").
 		Where("users.email=? ", email).
 		First(&user).Error; err != nil {
@@ -111,10 +111,10 @@ func GetUserRole(id int) (*RoleDO, error) {
 	if err != nil {
 		return nil, err
 	}
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
-	if err := db.DB.Table(database+".user_roles ").
+	if err := db.DB.Table(database+".user_roles").
 		Select("user_roles.user_id, user_roles.role_id, role.name").
 		Joins("LEFT JOIN "+database+".role  on role.id=user_roles.role_id").
 		Where("user_roles.user_id=? ", id).
@@ -136,8 +136,8 @@ func GetAllUsers() ([]*UserDO, error) {
 		return nil, err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	if err := db.DB.Table(database + ".users ").
 		Select("users.*").
@@ -158,8 +158,8 @@ func UpdateUser(userID int, update map[string]interface{}) error {
 		return err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	tx := db.DB.Begin()
 
@@ -194,8 +194,8 @@ func DeleteUser(id int) error {
 		return err
 	}
 
-	db.DB.LogMode(true)
-	defer db.DB.LogMode(false)
+	// db.DB.LogMode(true)
+	// defer db.DB.LogMode(false)
 
 	err = db.DB.Table(database+".users").Where("id=?", id).Delete(&user).Error
 	if err != nil {

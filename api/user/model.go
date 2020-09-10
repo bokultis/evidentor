@@ -2,9 +2,13 @@ package user
 
 import (
 	"database/sql"
-	"evidentor/api/db"
 	"os"
+	"strconv"
 	"time"
+
+	"github.com/bokultis/evidentor/api/db"
+	"github.com/bokultis/evidentor/api/redis"
+	"github.com/twinj/uuid"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-sql-driver/mysql"
@@ -33,9 +37,15 @@ type RoleDO struct {
 }
 
 type JWTToken struct {
-	Token string `json:"token"`
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
+	AccessUUID   string `json:"accessUuid"`
+	RefreshUUID  string `json:"refreshUuid"`
+	AtExpires    int64  `json:"atExpires"`
+	RtExpires    int64  `json:"rtExpires"`
 }
 
+// CreateUser creates user
 func CreateUser(user *UserDO) (int, error) {
 
 	database, err := db.GetDbName()
@@ -234,15 +244,62 @@ func (u UserDO) checkPassword(password string) bool {
 	return true
 }
 
-func (u UserWO) generateJWT() (JWTToken, error) {
-	signingKey := []byte(os.Getenv("JWT_SECRET"))
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp":        time.Now().Add(time.Hour * 24 * 1).Unix(),
-		"user_id":    int(u.ID),
-		"first_name": u.FirstName,
-		"last_name":  u.LastName,
-		"email":      u.Email,
-	})
-	tokenString, err := token.SignedString(signingKey)
-	return JWTToken{tokenString}, err
+func (u UserWO) generateJWT() (jwtt JWTToken, err error) {
+
+	atSigningKey := []byte(os.Getenv("JWT_SECRET"))
+	rtSigningKey := []byte(os.Getenv("JWT_SECRET"))
+
+	jwtt.AccessUUID = uuid.NewV4().String()
+	jwtt.RefreshUUID = uuid.NewV4().String()
+
+	jwtt.AtExpires = time.Now().Add(time.Minute * 15).Unix()
+	jwtt.RtExpires = time.Now().Add(time.Hour * 24 * 7).Unix()
+
+	atClaims := jwt.MapClaims{
+		"exp":         jwtt.AtExpires,
+		"user_id":     int(u.ID),
+		"first_name":  u.FirstName,
+		"last_name":   u.LastName,
+		"email":       u.Email,
+		"access_uuid": jwtt.AccessUUID,
+	}
+
+	rtClaims := jwt.MapClaims{
+		"exp":          jwtt.RtExpires,
+		"user_id":      int(u.ID),
+		"first_name":   u.FirstName,
+		"last_name":    u.LastName,
+		"email":        u.Email,
+		"refresh_uuid": jwtt.RefreshUUID,
+	}
+
+	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
+	jwtt.AccessToken, err = at.SignedString(atSigningKey)
+	if err != nil {
+		return JWTToken{}, err
+	}
+
+	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
+	jwtt.RefreshToken, err = rt.SignedString(rtSigningKey)
+	if err != nil {
+		return JWTToken{}, err
+	}
+
+	return jwtt, err
+}
+
+func createAuth(userid int, jwtt *JWTToken) error {
+	at := time.Unix(jwtt.AtExpires, 0) //converting Unix to UTC(to Time object)
+	rt := time.Unix(jwtt.RtExpires, 0)
+	now := time.Now()
+
+	errAccess := redis.RedisClient.Set(redis.Ctx, jwtt.AccessUUID, strconv.Itoa(int(userid)), at.Sub(now)).Err()
+	if errAccess != nil {
+		return errAccess
+	}
+	errRefresh := redis.RedisClient.Set(redis.Ctx, jwtt.RefreshUUID, strconv.Itoa(int(userid)), rt.Sub(now)).Err()
+	if errRefresh != nil {
+		return errRefresh
+	}
+	return nil
 }

@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"evidentor/api/middleware"
+	"github.com/bokultis/evidentor/api/middleware"
 
 	"github.com/gorilla/mux"
 )
@@ -24,6 +24,7 @@ type Route struct {
 func NewRouter() *mux.Router {
 
 	var AppRoutes []RoutePrefix
+	AppRoutes = append(AppRoutes, rootRoutes)
 	AppRoutes = append(AppRoutes, userRoutes)
 	AppRoutes = append(AppRoutes, studentRoutes)
 

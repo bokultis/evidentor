@@ -1,21 +1,21 @@
 package middleware
 
 import (
-	"evidentor/api/apiutil"
-	"evidentor/api/authorization"
-	"evidentor/api/db"
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 
-	"github.com/casbin/casbin"
-	gormadapter "github.com/casbin/gorm-adapter"
+	"github.com/bokultis/evidentor/api/apiutil"
+	"github.com/bokultis/evidentor/api/authorization"
+	"github.com/bokultis/evidentor/api/db"
+	"github.com/bokultis/evidentor/api/logger"
+	"github.com/bokultis/evidentor/api/token"
+	"github.com/casbin/casbin/v2"
+	gormadapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/gorilla/context"
-
-	jwt "github.com/dgrijalva/jwt-go"
 )
 
+// JWTMiddleware for auth
 func JWTMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		//init casbin auth rules
@@ -28,22 +28,21 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			log.Fatal(err)
 		}
 
-		tokenString := r.Header.Get("Authorization")
-		if len(tokenString) == 0 {
-			apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
-			return
-		}
-		tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
-		claims, err := VerifyToken(tokenString)
+		//claims, err := VerifyToken(r)
+		tokenAuth, err := token.ExtractTokenMetadata(r)
 		if err != nil {
+			logger.Logger.Warn(err.Error())
 			apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
 			return
 		}
-		//fmt.Printf("%+v", claims.(jwt.MapClaims)["user_id"].(float64))
-		//pass userId claim to req
-		//todo: find a better way to convert the claim to string
-		userId := strconv.FormatFloat(claims.(jwt.MapClaims)["user_id"].(float64), 'g', 1, 64)
-		context.Set(r, "user_id", userId)
-		authorization.Authorizer(authEnforcer, userId)(next).ServeHTTP(w, r)
+
+		userID, err := token.FetchAuth(tokenAuth)
+		if err != nil {
+			logger.Logger.Warn(err.Error())
+			apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
+			return
+		}
+		context.Set(r, "user_id", userID)
+		authorization.Authorizer(authEnforcer, strconv.FormatUint(userID, 10))(next).ServeHTTP(w, r)
 	})
 }

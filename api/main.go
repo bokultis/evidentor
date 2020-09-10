@@ -1,11 +1,13 @@
 package main
 
 import (
-	"evidentor/api/db"
-	"evidentor/api/logger"
-	"evidentor/api/router"
 	"net/http"
 	"os"
+
+	"github.com/bokultis/evidentor/api/db"
+	"github.com/bokultis/evidentor/api/logger"
+	"github.com/bokultis/evidentor/api/redis"
+	"github.com/bokultis/evidentor/api/router"
 
 	"github.com/gorilla/handlers"
 	"github.com/sirupsen/logrus"
@@ -27,6 +29,9 @@ func main() {
 
 	//Setup database
 	db.DB = db.SetupDB()
+
+	//Setup redis
+	redis.RedisClient = redis.SetupRedis()
 
 	logger.Logger.Printf("Server starts at localhost: %s", port)
 	//create http server

@@ -3,10 +3,11 @@ package student
 import (
 	"database/sql"
 	"encoding/json"
-	"evidentor/api/apiutil"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/bokultis/evidentor/api/apiutil"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"

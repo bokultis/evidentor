@@ -105,6 +105,8 @@ function schedule_db_backup {
 }
 
 function action_start {
+    docker run --name evidentor-redis -d redis
+
     printf "\n======== ${RED}Evidentor Development Environment${NC} ========\n" 
     echo "------------------"
     printf "\nStarting ${GREEN}Mysql Docker Container${NC} ... \n"    
@@ -118,7 +120,7 @@ function action_start {
     printf "\nSwagger UI: ${GREEN}http://localhost:1200${NC}\n"
     echo "------------------"
     
-    gnome-terminal --command="bash -c 'tail -f -n 25 ${BASEDIR}/log/logrus.log; $SHELL'"
+    gnome-terminal --command "bash -c 'tail -f -n 25 ${BASEDIR}/log/logrus.log; $SHELL'" > /dev/null 2>&1
 
     printf "\nRestore Database ${GREEN}Docker ${DOCKER_DATABASE} : ${DB_NAME}${NC} ... \n" 
     restore_database

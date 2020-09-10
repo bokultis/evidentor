@@ -2,8 +2,9 @@ package student
 
 import (
 	"database/sql"
-	"evidentor/api/db"
 	"time"
+
+	"github.com/bokultis/evidentor/api/db"
 
 	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"

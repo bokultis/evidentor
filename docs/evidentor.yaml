@@ -10,6 +10,9 @@ info:
 host: localhost:3001
 basePath: /
 tags:
+  - name: Root
+    description: Basic routes
+    
   - name: Users
     description: Everything about users
     
@@ -29,10 +32,10 @@ paths:
 ############################# USERS #################################
 #####################################################################
 
-  /users/login:
+  /login:
     post:
       tags:
-        - Users
+        - Root
       summary: Logs user into the system
       description: 'testing values email: boris@horisen.com, password: 1234'
       produces:
@@ -50,10 +53,10 @@ paths:
         '400':
           description: Invalid username/password supplied
           
-  /users/logout:
+  /logout:
     get:
       tags:
-        - Users
+        - Root
       summary: Logs out current logged in user session
       description: ''
       produces:
@@ -105,7 +108,7 @@ paths:
         - Bearer: []
   
   
-  '/users/{id}':
+  /users/{id}:
     get:
       tags:
         - Users

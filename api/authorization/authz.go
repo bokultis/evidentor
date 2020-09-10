@@ -1,13 +1,14 @@
 package authorization
 
 import (
-	"evidentor/api/apiutil"
-	"evidentor/api/logger"
-	"evidentor/api/user"
 	"net/http"
 	"strconv"
 
-	"github.com/casbin/casbin"
+	"github.com/bokultis/evidentor/api/apiutil"
+	"github.com/bokultis/evidentor/api/logger"
+	"github.com/bokultis/evidentor/api/user"
+
+	"github.com/casbin/casbin/v2"
 )
 
 func Authorizer(e *casbin.Enforcer, userId string) func(next http.Handler) http.Handler {

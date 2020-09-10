@@ -2,8 +2,9 @@ package user
 
 import (
 	"regexp"
-	"evidentor/api/apiutil"
 	"time"
+
+	"github.com/bokultis/evidentor/api/apiutil"
 
 	"github.com/go-sql-driver/mysql"
 )

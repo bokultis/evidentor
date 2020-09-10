@@ -1,7 +1,30 @@
 package router
 
-import "evidentor/api/user"
-import "evidentor/api/student"
+import (
+	"github.com/bokultis/evidentor/api/student"
+	"github.com/bokultis/evidentor/api/user"
+)
+
+var rootRoutes = RoutePrefix{
+	"/",
+	[]Route{
+
+		Route{
+			"UsersLogin",
+			"POST",
+			"/login",
+			user.LoginHandler,
+			false,
+		},
+		Route{
+			"UsersLogout",
+			"GET",
+			"/logout",
+			user.LogoutHandler,
+			true,
+		},
+	},
+}
 
 var userRoutes = RoutePrefix{
 	"/users",
@@ -27,13 +50,7 @@ var userRoutes = RoutePrefix{
 			user.UsersCreateHandler,
 			true,
 		},
-		Route{
-			"UsersLogin",
-			"POST",
-			"/login",
-			user.LoginHandler,
-			false,
-		},
+
 		Route{
 			"DeleteHandler",
 			"DELETE",

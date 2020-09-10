@@ -3,18 +3,22 @@ package user
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/bokultis/evidentor/api/apiutil"
 	"github.com/bokultis/evidentor/api/logger"
 	"github.com/bokultis/evidentor/api/token"
+	jwt "github.com/dgrijalva/jwt-go"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
+//UsersIndexHandler index handler
 func UsersIndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	var users []*UserDO
@@ -34,11 +38,12 @@ func UsersIndexHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(usersWO)
 }
 
+//UsersShowHandler show user by ID
 func UsersShowHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
-	userId, _ := strconv.Atoi(params["userId"])
-	user, err := GetUser(userId)
+	userID, _ := strconv.Atoi(params["userId"])
+	user, err := GetUser(userID)
 	if err != nil {
 		logger.Logger.Warn(err.Error())
 		apiutil.NewErrorResponse(w, apiutil.NewIntError(err))
@@ -49,6 +54,7 @@ func UsersShowHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(makeUserWO(user))
 }
 
+//UsersCreateHandler create new user
 func UsersCreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	var user UserInputWO
@@ -125,11 +131,12 @@ func UsersCreateHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(makeUserWO(userCreated))
 }
 
+//UsersDeleteHandler delete user
 func UsersDeleteHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
-	userId, _ := strconv.Atoi(params["userId"])
-	err := DeleteUser(userId)
+	userID, _ := strconv.Atoi(params["userId"])
+	err := DeleteUser(userID)
 
 	if err != nil {
 		logger.Logger.Warn(err.Error())
@@ -141,11 +148,12 @@ func UsersDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode("User deleted")
 }
 
+//UsersUpdateHandler update user
 func UsersUpdateHandler(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	var user UserUpdateWO
-	userId, _ := strconv.Atoi(params["userId"])
+	userID, _ := strconv.Atoi(params["userId"])
 
 	err := apiutil.GetRequestBody(r, &user)
 	if err != nil {
@@ -160,14 +168,14 @@ func UsersUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = UpdateUser(userId, *update)
+	err = UpdateUser(userID, *update)
 	if err != nil {
 		logger.Logger.Warn(err.Error())
 		apiutil.NewErrorResponse(w, apiutil.NewIntError(err))
 		return
 	}
 
-	updatedUser, err := GetUser(userId)
+	updatedUser, err := GetUser(userID)
 	if err != nil {
 		logger.Logger.Warn(err.Error())
 		apiutil.NewErrorResponse(w, apiutil.NewIntError(err))
@@ -177,6 +185,7 @@ func UsersUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(makeUserWO(updatedUser))
 }
 
+// LoginHandler user login handler
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var uCredentials UserCredentials
 
@@ -230,6 +239,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// LogoutHandler user logout handler
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	au, err := token.ExtractTokenMetadata(r)
 	if err != nil {
@@ -243,5 +253,94 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode("Successfully logged out")
+}
+
+//RefreshTokenHandler token func
+func RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
+	mapToken := map[string]string{}
+
+	err := apiutil.GetRequestBody(r, &mapToken)
+	if err != nil {
+		logger.Logger.Warn(err.Error())
+		apiutil.NewErrorResponse(w, apiutil.NewIntError(err))
+		return
+	}
+	refreshToken := mapToken["refresh_token"]
+	logger.Logger.Warn(refreshToken)
+
+	//verify the token
+	signingKey := []byte(os.Getenv("JWT_SECRET"))
+
+	rToken, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
+		//Make sure that the token method conform to "SigningMethodHMAC"
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return signingKey, nil
+	})
+	//if there is an error, the token must have expired
+	if err != nil {
+		logger.Logger.Warn(err.Error())
+		apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
+		return
+	}
+	//is token valid?
+	if _, ok := rToken.Claims.(jwt.Claims); !ok && !rToken.Valid {
+		logger.Logger.Warn(err.Error())
+		apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
+		return
+	}
+	//Since token is valid, get the uuid:
+	claims, ok := rToken.Claims.(jwt.MapClaims) //the token claims should conform to MapClaims
+	if ok && rToken.Valid {
+		refreshUUID, ok := claims["refresh_uuid"].(string) //convert the interface to string
+		if !ok {
+			//c.JSON(http.StatusUnprocessableEntity, err)
+			return
+		}
+		userID, err := strconv.Atoi(fmt.Sprintf("%.f", claims["user_id"]))
+		if err != nil {
+			logger.Logger.Warn(err.Error())
+			apiutil.NewErrorResponse(w, apiutil.ErrBadParameter)
+			return
+		}
+
+		//Delete the previous Refresh Token
+		deleted, delErr := token.DeleteAuth(refreshUUID)
+		if delErr != nil || deleted == 0 { //if any goes wrong
+			logger.Logger.Warn(err.Error())
+			apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
+			return
+		}
+		loggingUserDO, err := GetUser(userID)
+		if err != nil {
+			logger.Logger.Warn(err.Error())
+			apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
+			return
+		}
+
+		loggingUserWO := makeUserWO(loggingUserDO)
+		//Create new pairs of refresh and access tokens
+		ts, createErr := loggingUserWO.generateJWT()
+		if createErr != nil {
+			//c.JSON(http.StatusForbidden, createErr.Error())
+			return
+		}
+		//save the tokens metadata to redis
+		saveErr := createAuth(userID, &ts)
+		if saveErr != nil {
+			//c.JSON(http.StatusForbidden, saveErr.Error())
+			return
+		}
+		tokens := map[string]string{
+			"access_token":  ts.AccessToken,
+			"refresh_token": ts.RefreshToken,
+		}
+		json.NewEncoder(w).Encode(&tokens)
+	} else {
+		apiutil.NewErrorResponse(w, apiutil.ErrNotAuthenticated)
+		return
+	}
 }

@@ -18,9 +18,16 @@ var rootRoutes = RoutePrefix{
 		},
 		Route{
 			"UsersLogout",
-			"GET",
+			"POST",
 			"/logout",
 			user.LogoutHandler,
+			true,
+		},
+		Route{
+			"RefreshUserToken",
+			"POST",
+			"/refresh",
+			user.RefreshTokenHandler,
 			true,
 		},
 	},

@@ -50,24 +50,47 @@ paths:
       responses:
         '200':
           description: successful operation
-        '400':
+        '401':
           description: Invalid username/password supplied
           
   /logout:
-    get:
+    post:
       tags:
         - Root
       summary: Logs out current logged in user session
       description: ''
       produces:
         - application/json
-      parameters: []
       responses:
-        default:
+        '200':
           description: successful operation
+        '401':
+          description: Not Authorized
       security:
       - Bearer: []
-          
+  
+  /refresh:
+    post:
+      tags:
+        - Root
+      summary: Refresh user Token
+      description: 'refresh user token using refresh_token'
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Refresh token
+          required: true
+          schema:
+            $ref: '#/definitions/RefreshToken'
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Invalid refresh token   
+      security:
+        - Bearer: []
   /users:
     get:
       tags:
@@ -84,9 +107,9 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
-        
       security:
       - Bearer: []
+
     post:
       tags:
         - Users
@@ -607,7 +630,12 @@ definitions:
         type: string
       password:
         type: string
-        
+
+  RefreshToken:
+    type: object
+    properties:
+      refresh_token:
+        type: string       
         
   Student:
     type: object
